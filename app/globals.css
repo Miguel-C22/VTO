@@ -67,3 +67,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .btn-custom {
+    @apply w-full max-w-[40em] p-4 border border-black rounded-lg shadow-md transition-colors text-black;
+  }
+
+  .btn-clicked {
+    @apply bg-[#98d8b4];
+  }
+
+  .btn-default {
+    @apply bg-white;
+  }
+}

@@ -1,3 +1,5 @@
+import { ASSOCIATES } from "@/constants/global";
+import getUserData from "@/utils/getUserData";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -19,6 +21,8 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}${redirectTo}`);
   }
 
-  // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  const { data } = await getUserData();
+  const role = data?.[0]?.role_name;
+  // Redirect based on role
+  return NextResponse.redirect(role === ASSOCIATES ? "/associates" : "/management");
 }
