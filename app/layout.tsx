@@ -3,6 +3,8 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import LayoutWrapper from "./LayoutWrapper";
 import getUserData from "@/utils/getUserData";
+import { ChoicesProvider } from "@/context/ChoicesContext";
+import { CommentProvider } from "@/context/CommentContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -48,11 +50,15 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="flex flex-col min-h-screen">
-            <LayoutWrapper usersEmail={usersEmail} usersRole={usersRole}>
-              {children}
-            </LayoutWrapper>
-          </main>
+          <ChoicesProvider>
+            <CommentProvider>
+              <main className="flex flex-col min-h-screen">
+                <LayoutWrapper usersEmail={usersEmail} usersRole={usersRole}>
+                  {children}
+                </LayoutWrapper>
+              </main>
+            </CommentProvider>
+          </ChoicesProvider>
         </ThemeProvider>
       </body>
     </html>

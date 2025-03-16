@@ -33,8 +33,9 @@ async function assignUserRole() {
         },
         body: JSON.stringify({ user }),  // Pass the user object here
       });
-  
+     
       const data = await response.json();
+  
       if (data.error) {
         console.error('Error assigning role:', data.error);
         return false

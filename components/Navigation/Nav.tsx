@@ -3,7 +3,7 @@ import { MANAGER } from "@/constants/global";
 import { signOutAction } from "@/app/actions";
 
 interface NavProps {
-  usersRole: string;
+  usersRole: string | null;
   usersEmail: string;
 }
 
@@ -15,7 +15,7 @@ function Nav({ usersRole, usersEmail }: NavProps) {
 
       {/* Centered Links for Manager Role */}
       {usersRole === MANAGER && (
-        <div className="flex flex-grow justify-center gap-6">
+        <div className="flex flex-grow justify-left">
           <a
             href="/management/associates"
             className="btn btn-ghost text-white transition-all duration-200 hover:bg-[#1e3a52] rounded-lg px-4 py-2"
@@ -42,6 +42,12 @@ function Nav({ usersRole, usersEmail }: NavProps) {
             Sign out
           </button>
         </form>
+        <a
+            href="/user-settings"
+            className="btn btn-ghost text-white transition-all duration-200 hover:bg-[#1e3a52] rounded-lg px-4 py-2"
+          >
+            Settings
+        </a>
       </div>
     </nav>
   );

@@ -42,48 +42,8 @@ export const updateSession = async (request: NextRequest) => {
 
     // All this is controlling what routes the user has access to depending on there role.
     
-    // const user = await supabase.auth.getUser();
-    const { data, authUser } = await getUserData();
-
-    const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password", "/reset-password"];
-
-    // Get the requested path
-    const requestedPath = request.nextUrl.pathname;
-
-    // **Allow access if the requested route is public**
-    if (publicRoutes.includes(requestedPath)) {
-      return NextResponse.next();
-    }
-
-    const rolePermissions: Record<string, string[]> = {
-      admin: ["/associates", "/management",],
-      associate: ["/associates"],
-      manager: ["/management", "/management/associates", "/management/history", "/management/history", "/associates" ],
-    };
-    
-    if (!data || data.length === 0 || !data[0]?.role_name) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-    
-    if(data){
-      const userRole = data[0]?.role_name; 
-      const requestedPath = request.nextUrl.pathname;
-      try {
-        const allowedRoutes = rolePermissions[userRole] || [];
-        if (!allowedRoutes.includes(requestedPath)) {
-          return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
-    
-        return NextResponse.next();
-      } catch (error) {
-        console.error("Middleware error:", error);
-        return NextResponse.redirect(new URL("/sign-in", request.url));
-      }
-    }
-
-    
-
-    // // protected routes
+    const user = await supabase.auth.getUser();
+    //    // protected routes
     // if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
     //   return NextResponse.redirect(new URL("/sign-in", request.url));
     // }
@@ -92,7 +52,8 @@ export const updateSession = async (request: NextRequest) => {
     //   return NextResponse.redirect(new URL("/protected", request.url));
     // }
 
-    // return response;
+
+    return response;
   } catch (e) {
     // If you are here, a Supabase client could not be created!
     // This is likely because you have not set up environment variables.
@@ -104,3 +65,4 @@ export const updateSession = async (request: NextRequest) => {
     });
   }
 };
+

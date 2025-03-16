@@ -6,6 +6,7 @@ import getUserData from '@/utils/getUserData';
 
 function useGetUserData() {
     const [userEmail, setUserEmail] = useState<any>(null);
+    const [userId, setUserId] = useState<any>(null);
     const [roleName, setRoleName] = useState<any | null>(null);
     const [error, setError] = useState<any>(null);
 
@@ -16,6 +17,7 @@ function useGetUserData() {
             if (data) {
                 setRoleName(data[0].role_name);
                 setUserEmail(authUser?.email)
+                setUserId(authUser.id)
             }
           } catch (error) {
             setError(error)
@@ -26,7 +28,7 @@ function useGetUserData() {
       }, []); 
   
 
-    return {userEmail, roleName, error}
+    return {userEmail, roleName, userId, error}
 
 }
 

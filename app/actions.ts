@@ -12,12 +12,14 @@ export const signUpAction = async (formData: FormData) => {
   const password = formData.get("password")?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
+  const firstName = formData.get("first_name")?.toString();  
+  const lastName = formData.get("last_name")?.toString();  
 
-  if (!email || !password) {
+  if (!email || !password || !firstName || !lastName) {
     return encodedRedirect(
       "error",
       "/sign-up",
-      "Email and password are required",
+      "Email, password, first name, and last name are required",
     );
   }
 
@@ -26,6 +28,10 @@ export const signUpAction = async (formData: FormData) => {
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
+      data: {
+        first_name: firstName,  
+        last_name: lastName,  
+      },
     },
   });
 
@@ -91,7 +97,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
   return encodedRedirect(
     "success",
     "/forgot-password",
-    "Check your email for a link to reset your password.",
+    "If an account with that email exists, you’ll receive a password reset link shortly.",
   );
 };
 
@@ -136,4 +142,28 @@ export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
   return redirect("/sign-in");
+};
+
+export const updateNameAction = async (formData: FormData) => {
+  const supabase = await createClient();
+  const firstName = formData.get("first_name")?.toString();
+  const lastName = formData.get("last_name")?.toString();
+
+  const { data: user, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) {
+    return encodedRedirect("error", "/", "User not found or not authenticated");
+  }
+  
+  const { error: metadataError } = await supabase.auth.updateUser({
+    data: {
+      first_name: firstName,
+      last_name: lastName,
+    },
+  });
+
+  if (metadataError) {
+    return encodedRedirect("error", "/user-settings", "Name updated, but failed to update user info");
+  }
+
+  return encodedRedirect("success", "/user-settings", "Name updated successfully");
 };

@@ -23,6 +23,10 @@ export async function GET(request: Request) {
 
   const { data } = await getUserData();
   const role = data?.[0]?.role_name;
+  
+  if(!role){
+    return NextResponse.redirect(`${origin}/sign-in`);
+  }
   // Redirect based on role
   return NextResponse.redirect(role === ASSOCIATES ? "/associates" : "/management");
 }
