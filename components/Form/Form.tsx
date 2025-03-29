@@ -228,7 +228,7 @@ const Form = ({ actionName, submitFn, searchParamMessage }: FormProps) => {
             className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200"
             disabled={loading} // Disable the button while loading
           >
-            {loading ? "Submitting..." : actionName}
+            {loading ? "Loading..." : actionName}
           </button>
     
           {error && (

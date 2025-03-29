@@ -1,10 +1,10 @@
 import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import LayoutWrapper from "./LayoutWrapper";
 import getUserData from "@/utils/getUserData";
 import { ChoicesProvider } from "@/context/ChoicesContext";
 import { CommentProvider } from "@/context/CommentContext";
+import { SubmissionsProvider } from "@/context/SubmissionsContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -44,22 +44,17 @@ export default async function RootLayout({
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
           <ChoicesProvider>
             <CommentProvider>
-              <main className="flex flex-col min-h-screen">
-                <LayoutWrapper usersEmail={usersEmail} usersRole={usersRole}>
-                  {children}
-                </LayoutWrapper>
-              </main>
+              <SubmissionsProvider>
+                <main className="flex flex-col min-h-screen">
+                  <LayoutWrapper usersEmail={usersEmail} usersRole={usersRole}>
+                    {children}
+                  </LayoutWrapper>
+                </main>
+              </SubmissionsProvider>
             </CommentProvider>
           </ChoicesProvider>
-        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,7 +1,11 @@
 "use client";
+
 import { MANAGER } from "@/constants/global";
 import { signOutAction } from "@/app/actions";
 
+const styleButton = `btn btn-outline hover:bg-white hover:text-black rounded-lg px-4 py-2 transition-colors duration-200`
+const navContainer = `flex justify-between items-center px-6 py-2 bg-[#274c77] text-white`
+const styleLinks = `text-white transition-all duration-200 px-4 py-2 hover:underline underline-offset-4 decoration-2`;
 interface NavProps {
   usersRole: string | null;
   usersEmail: string;
@@ -9,22 +13,28 @@ interface NavProps {
 
 function Nav({ usersRole, usersEmail }: NavProps) {
   return (
-    <nav className="flex justify-between items-center px-6 py-2 bg-[#274c77] text-white">
+    <nav className={navContainer}>
       {/* Logo */}
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/V_%28logo_2010%29.svg" alt="Logo" className="h-16 w-auto" />
+        <a href={usersRole === MANAGER ? "/management" : "/associates"}>
+          <img 
+            src="/images/logo.png"
+            alt="Logo" 
+            className="h-16 w-auto"
+          />
+        </a>
 
       {/* Centered Links for Manager Role */}
       {usersRole === MANAGER && (
         <div className="flex flex-grow justify-left">
           <a
             href="/management/associates"
-            className="btn btn-ghost text-white transition-all duration-200 hover:bg-[#1e3a52] rounded-lg px-4 py-2"
+            className={styleLinks}
           >
             Associates
           </a>
           <a
             href="/management/history"
-            className="btn btn-ghost text-white transition-all duration-200 hover:bg-[#1e3a52] rounded-lg px-4 py-2"
+            className={styleLinks}
           >
             History
           </a>
@@ -37,14 +47,14 @@ function Nav({ usersRole, usersEmail }: NavProps) {
         <form action={signOutAction}>
           <button
             type="submit"
-            className="btn btn-outline border-white text-white hover:bg-white hover:text-black rounded-lg px-4 py-2 transition-colors duration-200"
+            className={styleButton}
           >
             Sign out
           </button>
         </form>
         <a
             href="/user-settings"
-            className="btn btn-ghost text-white transition-all duration-200 hover:bg-[#1e3a52] rounded-lg px-4 py-2"
+            className={styleButton}
           >
             Settings
         </a>
