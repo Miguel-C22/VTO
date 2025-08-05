@@ -1,9 +1,10 @@
-export default async function Layout({
+import { ThemeProvider } from "next-themes";
+import { ModeToggle } from "@/components/toggle-theme";
+
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="max-w-7xl flex flex-col gap-12 items-start">{children}</div>
-  );
+  return <div className="min-h-screen bg-background">{children}</div>;
 }

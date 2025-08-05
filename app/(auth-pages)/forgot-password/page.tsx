@@ -1,8 +1,9 @@
 import { forgotPasswordAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
 
@@ -11,27 +12,59 @@ export default async function ForgotPassword(props: {
 }) {
   const searchParams = await props.searchParams;
   return (
-    <>
-      <form className="flex-1 flex flex-col w-full gap-2 text-foreground [&>input]:mb-6 min-w-64 max-w-64 mx-auto">
-        <div>
-          <h1 className="text-2xl font-medium">Reset Password</h1>
-          <p className="text-sm text-secondary-foreground">
-            Already have an account?{" "}
-            <Link className="text-primary underline" href="/sign-in">
-              Sign in
-            </Link>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold tracking-tight">
+            Reset your password
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Enter your email address and we&apos;ll send you a link to reset your
+            password
           </p>
         </div>
-        <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" placeholder="you@example.com" required />
-          <SubmitButton formAction={forgotPasswordAction}>
-            Reset Password
-          </SubmitButton>
-          <FormMessage message={searchParams} />
+
+        <div className="bg-card border rounded-lg shadow-sm p-8">
+          <form className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                className="w-full"
+              />
+            </div>
+
+            <FormMessage message={searchParams} />
+
+            <Button
+              formAction={forgotPasswordAction}
+              className="w-full"
+              size="lg"
+            >
+              Send Reset Link
+            </Button>
+          </form>
+
+          <div className="mt-6">
+            <Separator className="my-4" />
+            <p className="text-center text-sm text-muted-foreground">
+              Remember your password?{" "}
+              <Link
+                className="font-medium text-primary hover:text-primary/80 transition-colors"
+                href="/sign-in"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
         </div>
-      </form>
-      <SmtpMessage />
-    </>
+
+        <SmtpMessage />
+      </div>
+    </div>
   );
 }
